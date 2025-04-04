@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import axios from "axios";
-const API_URL = "https://tigsimportal-backend.vercel.app"
+const API_URL = "https://tig-sim-portal-backend.vercel.app"
 
 export const sendOTP = async (email) => {
     try {
