@@ -175,6 +175,10 @@ app.delete("/delete-user", (req, res) => {
     });
 });
 
+app.get("/", (res, req) => {
+    res.send("TIG SIM PORTAL BACKEND")
+})
+
 
 app.get("/protected", authenticateToken, (req, res) => {
     const token = req.headers["authorization"];
