@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIG Check In</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link rel="stylesheet" href="./frontend-2/css/style.css">
+    <link rel="shortcut icon" href="./frontend-2/images/techno_logo.png">
+</head>
+
+<body>
+    <section class="header-section">
+        <div class="logo-container">
+            <img src="./frontend-2/images/techno_logo.png" alt="Logo">
+        </div>
+    </section>
+    <div class="container">
+        <div class="tBg"> <!--Transparent background-->
+            <div class="box signin">
+                <img src="./frontend-2/images/img1.png" alt="img1">
+
+            </div>
+
+            <div class="box">
+                <h2>Welcome to Techno India Group </h2>
+                <img src="./frontend-2/images/img2.png" alt="img2">
+            </div>
+
+            <!-- login page -->
+            <div class="form-box">
+                <div class="form loginform">
+                    <form>
+                        <h3>Log In</h3>
+                        <div class="entryarea">
+                            <input type="text" required>
+                            <div class="labelline">Enter Email/Ph no.</div>
+                        </div>
+                        <input type="submit" value="Send OTP">
+                    </form>
+                </div>
+
+                <!-- otp page -->
+                <div class="form signupform">
+                    <form>
+                        <h3>OTP Verification</h3>
+                        <div class="entryarea">
+                            <input type="number" required min="0">
+                            <div class="labelline">Enter OTP</div>
+                        </div>
+                        <div class="submit-btn">
+                            <input type="submit" value="Verify" onclick="validateOTP(event)">
+                            <button type="submit" id="resend" disabled>Resend in 60s</button>
+                        </div>
+                        <!-- <p>Didn't receive the OTP? <a href="#">RESEND OTP</a></p> -->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./frontend-2/index.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,344 @@
+/* base style */
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    /* background: #353232c6; */
+    background: rgb(20, 20, 20);
+    background-size: cover;
+    transition: 0.5s;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: inherit; 
+    filter: blur(2px); 
+    z-index: -1; 
+}
+
+body.active {
+    background: #353232c6;
+}
+
+.header-section {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 30vh; 
+    background: #ef2227;
+    border-bottom-left-radius: 50% 30%;
+    border-bottom-right-radius: 50% 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: -1; 
+}
+
+.logo-container img {
+    width: 150px; 
+    height: auto;
+}
+
+.container {
+    position: relative;
+    width: 800px;
+    height: 500px;
+    margin: 20px;
+} 
+
+/* transparent background design */
+.tBg {
+    position: absolute;
+    top: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 420px;
+    background: rgba(255,255,255, 0.2);
+    border-radius: 10% 7% / 10% 7%;
+    backdrop-filter: blur(10px);
+}
+
+.tBg .box {
+    position: relative;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.box h2 {
+    color: #000;
+    font-size: 1.2em;
+    font-family: '';
+    margin-bottom: 10px;
+}
+
+.box img {
+    width: 200px; 
+    height: auto;
+    display: block;
+}
+
+/* login form & otp form box */
+.form-box {
+    position: absolute;
+    background: #fcfbfb;
+    height: 100%;
+    width: 50%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 5px 45px rgba(0,0,0,0.25);
+    transition: ease-in-out .5s;
+    overflow: hidden;
+    border-bottom-left-radius: 10% 7% ;
+    border-top-left-radius: 10% 7%;
+}
+
+.form-box.active {
+    left: 50%;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 10% 7%;
+    border-bottom-right-radius: 10% 7%;
+
+}
+
+.form-box .form {
+    position: absolute;
+    width: 100%;
+    transition: 0.5s;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.form-box .loginform {
+    transition-delay: 0.25s;
+}
+
+.form-box.active .loginform {
+    left: -100%;
+    transition-delay: 0;
+}
+
+.form-box .signupform {
+    left: 100%;
+    transition-delay: 0;
+}
+
+.form-box.active .signupform {
+    left: 0%;
+    transition-delay: 0.25s;
+}
+
+.form-box .form form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    flex-direction: column;
+}
+
+.form form input {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 20px;
+    padding: 10px;
+    outline: none;
+    border: 1px solid #333;
+} 
+
+/* login input entryarea div  */
+.entryarea {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.entryarea input[type="text"], input[type="number"] {
+
+    border-radius: 5px;
+    
+}
+
+.entryarea input[type="text"]:focus ,input[type="number"]:focus {
+    border-color: #f82a2ec7;
+}
+.entryarea input[type="text"].invalid, input[type="number"].invalid {
+    border-color: #db0f13;
+    border-width: 2px;
+}
+
+.entryarea input[type="text"].invalid + .labelline {
+    color: #db0f13;
+}
+.entryarea input[type="number"].invalid + .labelline {
+    color: #db0f13;
+}
+
+/* login placeholder */
+.labelline {
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    font-size: 14px;
+    color: #000;
+    background-color: #fcfbfb;
+    padding: 0 5px;
+    transition: color 0.3s ease;
+}
+
+/* responsiveness */
+@media (max-width: 356px)  {
+    .labelline {
+        font-size: 8px !important; 
+    }
+}
+
+
+@media (max-width: 470px) {
+    .entryarea input[type="text"] {
+        font-size: 10px;
+    }
+    .labelline {
+        top: -7px;
+        left: -12px;
+        font-size: 10px;
+    }
+}
+
+.form form h3 {
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.form form p {
+    color: #333;
+    font-style: italic;
+    font-size: 14px;
+}
+
+.form form a {
+    font-style: normal;
+    font-size: 15px;
+    color: #780606;
+}
+
+.form form input[type="submit"]{
+    background: #db0f13;
+    border: none;
+    border-radius: 20px;
+    max-width: 100px;
+    color: #fff;
+    cursor: pointer;
+}
+
+button {
+    background: #db0f13;
+    border: none;
+    border-radius: 20px;
+    max-width: 100px;
+    color: #fff;
+    cursor: pointer;
+    padding: 8px 12px;
+}
+
+#resend {
+    font-size: -5px;
+}
+.error-msg {
+    font-size: 14px;
+    color: #db0f13;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.submit-btn {
+    display: flex;
+    gap: 10px;
+}
+
+.submit-btn {
+    display: flex;
+    gap: 10px;
+}
+
+.submit-btn input[type="submit"], 
+#resend {
+    width: 100%;
+    max-width: 100px;  /* Ensure both elements have the same max-width */
+    height: 40px;  /* Set the same height */
+    background: #db0f13;
+    border: none;
+    border-radius: 20px;
+    color: #fff;
+    cursor: pointer;
+    text-align: center;
+    padding: 8px 12px;
+    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#resend:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+
+/* .logo-container:before {
+    content: "";
+    position: absolute;
+    height: 2000px;
+    width: 2000px;
+    top: -10%;
+    right: 48%;
+    transform: translateY(-50%);
+    background: #db0f13;
+    transition: 0.8s ease-in-out;
+    border-radius: 50%;
+    z-index: -1;
+} */
+
+
+
+
+
+
+
+
+
+
+
+
+
