@@ -8,6 +8,7 @@ const cors = require('cors');
 const authenticateToken = require("./middleware/authemticateToken")
 
 const app = express();
+app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -113,7 +114,7 @@ app.post("/verify-otp", (req, res) => {
         return res.status(400).json({ message: "Email and OTP are required" });
     }
 
-    const query = `SELECT otp, otp_expires, otp_verified FROM users WHERE email = ?`;
+    const query = `SELECT otp, otp_expires FROM users WHERE email = ?`;
     db.query(query, [email], (err, results) => {
         if (err) {
             return res.status(500).json({ message: "Database error", error: err });
@@ -141,13 +142,13 @@ app.post("/verify-otp", (req, res) => {
             return res.status(400).json({ message: "OTP expired. Request a new OTP." });
         }
 
-        db.query(`UPDATE users SET otp_verified = TRUE WHERE email = ?`, [email], (err) => {
-            if (err) {
-                return res.status(500).json({ message: "Database error", error: err });
-            }
-        });
+        // db.query(`UPDATE users SET otp_verified = TRUE WHERE email = ?`, [email], (err) => {
+        //     if (err) {
+        //         return res.status(500).json({ message: "Database error", error: err });
+        //     }
+        // });
 
-        const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1m' });
 
         res.json({ success: true, message: "OTP verified successfully", token });
     });
@@ -174,6 +175,31 @@ app.delete("/delete-user", (req, res) => {
         res.json({ success: true, message: "User deleted successfully" });
     });
 });
+
+app.post('/logout', (req, res) => {
+    const { email } = req.body;
+
+    console.log("Auto Logout Triggered for:", email);
+
+    if (!email) {
+        return res.status(400).json({ message: "Email is required" });
+    }
+
+    const sql = `UPDATE users 
+                 SET otp = NULL, 
+                     otp_verified = FALSE 
+                 WHERE email = ?`;
+
+    db.query(sql, [email], (err, result) => {
+        if (err) {
+            console.error("DB Error:", err);
+            return res.status(500).json({ message: "Database Error" });
+        }
+
+        res.json({ message: "User Logged Out Successfully. OTP Cleared." });
+    });
+});
+
 
 app.get("/", (res, req) => {
     res.send("TIG SIM PORTAL BACKEND")

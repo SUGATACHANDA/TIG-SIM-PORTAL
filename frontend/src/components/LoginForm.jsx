@@ -17,6 +17,18 @@ const Auth = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        const token = localStorage.getItem("token");
+
+        if (token) {
+            navigate("/dashboard")
+        }
+        else {
+            navigate("/")
+        }
+    }, [navigate])
+
+
+    useEffect(() => {
         let timer;
         if (cooldown > 0) {
             timer = setTimeout(() => setCooldown(cooldown - 1), 1000);
