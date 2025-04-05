@@ -6,6 +6,8 @@ const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const authenticateToken = require("./middleware/authemticateToken")
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
 app.use(express.json());
@@ -88,15 +90,19 @@ app.post('/send-otp', (req, res) => {
 
         const otp = generateOTP()
 
+        let template = fs.readFileSync(path.join(__dirname, 'otp_template.html'), 'utf-8');
+        template = template.replace('{{OTP}}', otp, '{{email}}', email);
+
         const otpExpires = new Date(Date.now() + 5 * 60 * 1000)
 
         db.query("UPDATE users SET otp = ?, otp_expires = ?  WHERE email = ?", [otp, otpExpires, email], (err) => {
             if (err) return res.status(500).json({ message: err.message });
             const mailOptions = {
-                from: process.env.EMAIL_USER,
+                from: `"Techno India Group" <${process.env.EMAIL_USER}>`,
                 to: email,
                 subject: "OTP for Login",
-                text: `Your OTP for login is ${otp}. It will expire in 5 minutes.`
+                text: `Your OTP for login is ${otp}. It will expire in 5 minutes.`,
+                html: template
             }
 
             tranporter.sendMail(mailOptions, (err) => {
