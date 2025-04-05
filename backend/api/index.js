@@ -5,7 +5,7 @@ const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const authenticateToken = require("./middleware/authemticateToken")
+const authenticateToken = require("../middleware/authemticateToken")
 const fs = require('fs');
 const path = require('path');
 

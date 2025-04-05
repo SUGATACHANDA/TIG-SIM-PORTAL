@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const pool = require('../server'); // adjust to your db connection module
+const pool = require('../api/index'); // adjust to your db connection module
 
 const authenticateToken = async (req, res, next) => {
     const authHeader = req.headers['authorization'];
