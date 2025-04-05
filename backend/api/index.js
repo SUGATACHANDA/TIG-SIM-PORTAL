@@ -4,18 +4,19 @@ const mysql = require('mysql2');
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
-const cors = require('cors');
 const authenticateToken = require("../middleware/authemticateToken")
 const fs = require('fs');
 const path = require('path');
+const cors = require('cors');
 
-const app = express();
-app.use(express.json());
-app.use(cors({
+const corsOptions = {
     origin: 'https://tigsimportal.vercel.app',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true,
-}));
+    credentials: true,            //access-control-allow-credentials:true
+    optionSuccessStatus: 200
+}
+const app = express();
+app.use(cors(corsOptions));
+app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
