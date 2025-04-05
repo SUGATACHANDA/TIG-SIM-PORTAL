@@ -207,9 +207,9 @@ app.post('/logout', (req, res) => {
 });
 
 
-app.get("/", (res, req) => {
-    res.send("TIG SIM PORTAL BACKEND")
-})
+app.get("/", (req, res) => {
+    res.send("TIG SIM PORTAL BACKEND");
+});
 
 
 app.get("/protected", authenticateToken, (req, res) => {
