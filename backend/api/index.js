@@ -54,7 +54,8 @@ const createTableQuery = `
 
 const predefineEmailAddress = [
     ["scbabai2704@gmail.com"],
-    ["sugatachanda.cse2022@nsec.ac.in"]
+    ["sugatachanda.cse2022@nsec.ac.in"],
+    ["kallol.bhattacharya@nsec.ac.in"]
 ]
 
 
