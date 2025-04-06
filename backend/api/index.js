@@ -10,10 +10,12 @@ const path = require('path');
 const cors = require('cors');
 
 const corsOptions = {
-    origin: '*',
-    optionsSuccessStatus: 200,
-    credentials: true,            //access-control-allow-credentials:true
-}
+    origin: 'https://tigsimportal.vercel.app', // allow only your front-end domain
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 204
+};
+
 const app = express();
 app.use(cors(corsOptions));
 app.use(express.json());
