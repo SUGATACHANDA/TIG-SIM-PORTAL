@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import axios from "axios";
 const API_URL = "https://tig-sim-portal-backend.vercel.app"; // Replace with your API URL
+// const API_URL = "http://localhost:5000"; // Replace with your API URL
 
 export const sendOTP = async (email) => {
     try {

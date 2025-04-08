@@ -5,18 +5,18 @@
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
-body {
+div.login{
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     /* background: #353232c6; */
-    background: rgb(20, 20, 20);
+    /* background: rgb(20, 20, 20); */
     background-size: cover;
     transition: 0.5s;
 }
 
-body::before {
+.login::before {
     content: "";
     position: absolute;
     top: 0;
@@ -28,7 +28,7 @@ body::before {
     z-index: -1; 
 }
 
-body.active {
+.login.active {
     background: #353232c6;
 }
 
@@ -84,7 +84,7 @@ body.active {
 }
 
 .box h2 {
-    color: #000;
+    color: black;
     font-size: 1.2em;
     font-family: '';
     margin-bottom: 10px;
@@ -231,7 +231,13 @@ body.active {
         left: -12px;
         font-size: 10px;
     }
+    .submit-btn {
+        flex-direction: column; /* Stack buttons in a column */
+        gap: 10px; /* Add spacing between buttons */
+        align-items: center; /* Center align the buttons */
+    }
 }
+
 
 .form form h3 {
     text-align: center;

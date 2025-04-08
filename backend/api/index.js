@@ -5,12 +5,13 @@ const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const authenticateToken = require("../middleware/authemticateToken")
+// const createRolesAndUsers = require('../query');
 const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
 
 const corsOptions = {
-    origin: 'https://tigsimportal.vercel.app', // allow only your front-end domain
+    origin: ['https://tigsimportal.vercel.app', 'http://192.168.1.8:3000', 'http://localhost:3000'], // allow only your front-end domain
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // allow cookies and credentials
     allowedHeaders: ['Content-Type', 'Authorization'], // explicitly allow headers
@@ -26,6 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Add fallback CORS headers
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "https://tigsimportal.vercel.app");
+    // res.header("Access-Control-Allow-Origin", "http://192.168.1.8:3000");
     res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
     next();
@@ -43,6 +45,8 @@ const db = mysql.createPool({
     connectTimeout: 100000,
 })
 
+// createRolesAndUsers;
+
 const createTableQuery = `
     CREATE TABLE IF NOT EXISTS users (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -52,13 +56,11 @@ const createTableQuery = `
         otp_verified BOOLEAN DEFAULT FALSE
     )`;
 
-const predefineEmailAddress = [
-    ["scbabai2704@gmail.com"],
-    ["sugatachanda.cse2022@nsec.ac.in"],
-    ["kallol.bhattacharya@nsec.ac.in"]
-]
-
-
+// const predefineEmailAddress = [
+//     ["scbabai2704@gmail.com"],
+//     ["sugatachanda.cse2022@nsec.ac.in"],
+//     ["kallol.bhattacharya@nsec.ac.in"]
+// ]
 db.query(createTableQuery, (err) => {
     if (err) {
         console.log("Error creating table:", err);
@@ -66,16 +68,104 @@ db.query(createTableQuery, (err) => {
     else {
         console.log("User table already exists or created successfully");
 
-        db.query("INSERT IGNORE INTO users (email) VALUES ?", [predefineEmailAddress], (err, result) => {
-            if (err) {
-                console.log("Error inserting predefined email addresses:", err);
-            }
-            else {
-                console.log("Predefined email addresses inserted successfully");
-            }
-        })
+        // db.query("INSERT IGNORE INTO users (email) VALUES ?", [predefineEmailAddress], (err, result) => {
+        //     if (err) {
+        //         console.log("Error inserting predefined email addresses:", err);
+        //     }
+        //     else {
+        //         console.log("Predefined email addresses inserted successfully");
+        //     }
+        // })
     }
 })
+
+const createRolesTable = `
+CREATE TABLE IF NOT EXISTS roles (
+    master_id INT AUTO_INCREMENT PRIMARY KEY,
+    role_name VARCHAR(50) NOT NULL UNIQUE,
+    features TEXT
+)`;
+
+// Add role_id to Users Table
+const alterUsersTable = `
+ALTER TABLE users ADD COLUMN role_id INT,
+ADD FOREIGN KEY (role_id) REFERENCES roles(master_id)
+`;
+
+// Insert Roles
+const insertRoles = `
+INSERT INTO roles (master_id, role_name) VALUES
+(NULL, 'Admin'),
+(1, 'MD'),
+(2, 'Principal'),
+(3, 'Dean'),
+(4, 'HOD'),
+(5, 'Faculty');
+`;
+
+// Execute Queries
+db.query(createRolesTable, (err) => {
+    if (err) throw err;
+    console.log('Roles Table Created');
+
+    db.query(alterUsersTable, (err) => {
+        if (err) console.log('Users Table already altered');
+        else console.log('Users Table Altered');
+
+        db.query(insertRoles, (err) => {
+            if (err) console.log('Roles already inserted');
+            else console.log('Roles Inserted');
+        });
+    });
+});
+
+// const checkAndAddColumn = (tableName, columnName, columnDefinition) => {
+//     const checkColumnQuery = `
+//         SELECT COUNT(*) AS count 
+//         FROM INFORMATION_SCHEMA.COLUMNS 
+//         WHERE TABLE_NAME = ? AND COLUMN_NAME = ? AND TABLE_SCHEMA = ?`;
+
+//     db.query(checkColumnQuery, [tableName, columnName, process.env.DB_DATABASE], (err, result) => {
+//         if (err) {
+//             console.error(`Error checking column ${columnName}:`, err);
+//             return;
+//         }
+
+//         if (result[0].count === 0) {
+//             const alterTableQuery = `ALTER TABLE ${tableName} ADD COLUMN ${columnDefinition}`;
+//             db.query(alterTableQuery, (err) => {
+//                 if (err) {
+//                     console.error(`Error adding column ${columnName}:`, err);
+//                 } else {
+//                     console.log(`Column ${columnName} added successfully.`);
+//                 }
+//             });
+//         } else {
+//             console.log(`Column ${columnName} already exists.`);
+//         }
+//     });
+// };
+
+// // Check and add columns
+// checkAndAddColumn('users', 'name', 'name VARCHAR(50)');
+// checkAndAddColumn('users', 'mobile', 'mobile VARCHAR(10)');
+// checkAndAddColumn('users', 'role', "role VARCHAR(20) DEFAULT 'user'");
+
+const insertUsersQuery = `
+INSERT IGNORE INTO users (name, email, mobile, role, role_id) VALUES
+('sugata chanda', 'sugatachanda.cse2022@nsec.ac.in', '9748278005', 'user', 1),
+('SUGATA CHANDA', 'scbabai2704@gmail.com', '8888888888', 'admin', 2),
+('Kallol Bhattacharya', 'kallol.bhattacharya@nsec.ac.in', '7777777777', 'principal', 3),
+('Sugata Chanda', 'sugatachanda27@gmail.com', '7777777777', 'hod', 4)
+`;
+
+db.query(insertUsersQuery, (err, result) => {
+    if (err) {
+        console.error("Error inserting predefined users:", err);
+    } else {
+        console.log("Predefined users inserted successfully.");
+    }
+});
 
 
 const tranporter = nodemailer.createTransport({
@@ -137,7 +227,7 @@ app.post("/verify-otp", (req, res) => {
         return res.status(400).json({ message: "Email and OTP are required" });
     }
 
-    const query = `SELECT otp, otp_expires FROM users WHERE email = ?`;
+    const query = `SELECT id, name, email, mobile, role_id, otp, otp_expires FROM users WHERE email = ?`;
     db.query(query, [email], (err, results) => {
         if (err) {
             return res.status(500).json({ message: "Database error", error: err });
@@ -147,15 +237,15 @@ app.post("/verify-otp", (req, res) => {
             return res.status(400).json({ message: "User not found" });
         }
 
-        const { otp: storedOTP, otp_expires, otp_verified } = results[0];
+        const { otp: storedOTP, otp_expires } = results[0];
 
         if (!storedOTP) {
             return res.status(400).json({ message: "No OTP found. Request a new OTP." });
         }
 
-        if (otp_verified) {
-            return res.status(400).json({ message: "OTP already verified. Please request a new OTP." });
-        }
+        // if (otp_verified) {
+        //     return res.status(400).json({ message: "OTP already verified. Please request a new OTP." });
+        // }
 
         if (otp !== storedOTP) {
             return res.status(400).json({ message: "Invalid OTP" });
@@ -165,15 +255,21 @@ app.post("/verify-otp", (req, res) => {
             return res.status(400).json({ message: "OTP expired. Request a new OTP." });
         }
 
-        // db.query(`UPDATE users SET otp_verified = TRUE WHERE email = ?`, [email], (err) => {
-        //     if (err) {
-        //         return res.status(500).json({ message: "Database error", error: err });
-        //     }
-        // });
+        const userData = {
+            id: results[0].id,
+            name: results[0].name,
+            email: results[0].email,
+            mobile: results[0].mobile,
+            role_id: results[0].role_id
+        };
 
-        const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1m' });
+        const token = jwt.sign({ userData }, process.env.JWT_SECRET, { expiresIn: '2m' });
 
-        res.json({ success: true, message: "OTP verified successfully", token });
+        console.log("Fetched User Data:", userData);
+
+        res.json({
+            success: true, message: "OTP verified successfully", token: token
+        });
     });
 });
 
@@ -223,6 +319,54 @@ app.post('/logout', (req, res) => {
     });
 });
 
+const verifyToken = (req, res, next) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) return res.status(401).json({ error: 'Unauthorized' });
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) return res.status(403).json({ error: 'Token Expired' });
+        req.user = user;
+        next();
+    });
+};
+
+app.post("/verify-token", (req, res) => {
+    const token = req.body.token;
+
+    if (!token) {
+        return res.status(401).json({ message: "Token is required" });
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: "Invalid or Expired Token" });
+        }
+
+        const userId = decoded.userData.id;
+
+        const query = `
+            SELECT users.id, users.name, users.email, users.mobile, roles.role_name, roles.features
+            FROM users 
+            JOIN roles ON users.role_id = roles.master_id
+            WHERE users.id = ?
+        `;
+
+        db.query(query, [userId], (err, results) => {
+            if (err) {
+                return res.status(500).json({ message: "Database Error", error: err });
+            }
+
+            if (!results || results.length === 0) {
+                return res.status(404).json({ message: "User Not Found" });
+            }
+
+            res.json({
+                success: true,
+                user: results[0]
+            });
+        });
+    });
+});
 
 app.get("/", (req, res) => {
     res.send("TIG SIM PORTAL BACKEND");

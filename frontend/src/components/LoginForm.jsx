@@ -77,7 +77,7 @@ const Auth = () => {
     };
 
     return (
-        <div>
+        <div className='login'>
             <link rel="stylesheet" href={styles} />
 
             <section className="header-section">
@@ -92,7 +92,7 @@ const Auth = () => {
                         <img src={img1} alt="img1" />
                     </div>
                     <div className="box">
-                        <h2>Welcome to Techno India Group</h2>
+                        <h2 className=''>Welcome to Techno India Group</h2>
                         <img src={img2} alt="img2" />
                     </div>
                     <div className="form-box w-full md:w-1/2 bg-white p-4 sm:p-6 md:p-8 space-y-3 sm:space-y-4 md:space-y-6">

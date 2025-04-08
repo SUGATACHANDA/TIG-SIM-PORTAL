@@ -3,7 +3,7 @@ import './App.css';
 import { ToastContainer } from 'react-toastify';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
-import Dashboard from './components/Dashboard';
+import Dashboard from './pages/Dashboard';
 import AutoLogout from './components/AutoLogout';
 
 function App() {
