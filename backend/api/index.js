@@ -27,10 +27,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Add fallback CORS headers
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "https://tigsimportal.vercel.app");
-    // res.header("Access-Control-Allow-Origin", "http://192.168.1.8:3000");
-    res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");
+    res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS");
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    next();
+    if (req.method === "OPTIONS") {
+        res.sendStatus(204); // Respond to preflight requests
+    } else {
+        next();
+    }
 });
 
 const db = mysql.createPool({
