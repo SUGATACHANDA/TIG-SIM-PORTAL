@@ -57,7 +57,7 @@ const Dashboard = () => {
             })
             .catch((err) => {
                 console.log(err);
-                alert("Session Expired. Please login again.");
+                // alert("Session Expired. Please login again.");
                 window.location.href = "/";
             });
     }, []);
