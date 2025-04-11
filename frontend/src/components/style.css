@@ -1,20 +1,19 @@
-/* base style */
-* {
+
+/* * {
     margin: 0;
     padding: 0;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-}
+} */
 
-div.login{
+/* div.login{
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    /* background: #353232c6; */
-    /* background: rgb(20, 20, 20); */
+
     background-size: cover;
     transition: 0.5s;
-}
+} */
 
 .login::before {
     content: "";
@@ -59,7 +58,7 @@ div.login{
     margin: 20px;
 } 
 
-/* transparent background design */
+
 .tBg {
     position: absolute;
     top: 40px;
@@ -96,7 +95,7 @@ div.login{
     display: block;
 }
 
-/* login form & otp form box */
+
 .form-box {
     position: absolute;
     background: #fcfbfb;
@@ -151,7 +150,7 @@ div.login{
     transition-delay: 0.25s;
 }
 
-.form-box .form form {
+.form-box .form form  {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -169,7 +168,7 @@ div.login{
     border: 1px solid #333;
 } 
 
-/* login input entryarea div  */
+
 .entryarea {
     position: relative;
     width: 100%;
@@ -202,7 +201,7 @@ div.login{
     color: #db0f13;
 }
 
-/* login placeholder */
+
 .labelline {
     position: absolute;
     top: -10px;
@@ -214,7 +213,7 @@ div.login{
     transition: color 0.3s ease;
 }
 
-/* responsiveness */
+
 @media (max-width: 356px)  {
     .labelline {
         font-size: 8px !important; 
@@ -232,9 +231,9 @@ div.login{
         font-size: 10px;
     }
     .submit-btn {
-        flex-direction: column; /* Stack buttons in a column */
-        gap: 10px; /* Add spacing between buttons */
-        align-items: center; /* Center align the buttons */
+        flex-direction: column; 
+        gap: 10px; 
+        align-items: center; 
     }
 }
 
@@ -301,8 +300,8 @@ button {
 .submit-btn input[type="submit"], 
 #resend {
     width: 100%;
-    max-width: 100px;  /* Ensure both elements have the same max-width */
-    height: 40px;  /* Set the same height */
+    max-width: 100px;  
+    height: 40px;  
     background: #db0f13;
     border: none;
     border-radius: 20px;
@@ -322,19 +321,7 @@ button {
 }
 
 
-/* .logo-container:before {
-    content: "";
-    position: absolute;
-    height: 2000px;
-    width: 2000px;
-    top: -10%;
-    right: 48%;
-    transform: translateY(-50%);
-    background: #db0f13;
-    transition: 0.8s ease-in-out;
-    border-radius: 50%;
-    z-index: -1;
-} */
+
 
 
 

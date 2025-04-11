@@ -21,6 +21,29 @@ export const verifyOTP = async (email, otp) => {
     }
 };
 
+export const verifyToken = async (token) => {
+    try {
+        const res = await axios.post(`${API_URL}/verify-token`, { token });
+        return res.data;
+    } catch (error) {
+        console.log("Token verification failed:", error);
+        throw error;
+    }
+};
+
+export const requestEditProfile = async (email, requestText) => {
+    try {
+        const res = await axios.post(`${API_URL}/request-edit`, {
+            email,
+            request: requestText,
+        });
+        return res.data;
+    } catch (error) {
+        console.log("Request Edit failed:", error);
+        throw error;
+    }
+};
+
 export const logoutUser = async (email) => {
     try {
         const res = await axios.post(`${API_URL}/logout`, { email });

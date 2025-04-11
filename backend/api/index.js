@@ -11,7 +11,9 @@ const path = require('path');
 const cors = require('cors');
 
 const corsOptions = {
-    origin: 'https://tigsimportal.vercel.app', // allow only your front-end domain
+    origin: 'https://tigsimportal.vercel.app',
+    // origin: 'http://192.168.1.8:3000',
+    // origin: 'http://172.30.192.1:3000',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // allow cookies and credentials
     allowedHeaders: ['Content-Type', 'Authorization'], // explicitly allow headers
@@ -27,6 +29,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Add fallback CORS headers
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "https://tigsimportal.vercel.app");
+    // res.header("Access-Control-Allow-Origin", "http://192.168.1.8:3000");
+    // res.header("Access-Control-Allow-Origin", "http://172.30.192.1:3000");
     res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS");
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
     if (req.method === "OPTIONS") {
@@ -47,8 +51,6 @@ const db = mysql.createPool({
     queueLimit: 0,
     connectTimeout: 100000,
 })
-
-// createRolesAndUsers;
 
 const createTableQuery = `
     CREATE TABLE IF NOT EXISTS users (
@@ -122,38 +124,6 @@ db.query(createRolesTable, (err) => {
     });
 });
 
-// const checkAndAddColumn = (tableName, columnName, columnDefinition) => {
-//     const checkColumnQuery = `
-//         SELECT COUNT(*) AS count 
-//         FROM INFORMATION_SCHEMA.COLUMNS 
-//         WHERE TABLE_NAME = ? AND COLUMN_NAME = ? AND TABLE_SCHEMA = ?`;
-
-//     db.query(checkColumnQuery, [tableName, columnName, process.env.DB_DATABASE], (err, result) => {
-//         if (err) {
-//             console.error(`Error checking column ${columnName}:`, err);
-//             return;
-//         }
-
-//         if (result[0].count === 0) {
-//             const alterTableQuery = `ALTER TABLE ${tableName} ADD COLUMN ${columnDefinition}`;
-//             db.query(alterTableQuery, (err) => {
-//                 if (err) {
-//                     console.error(`Error adding column ${columnName}:`, err);
-//                 } else {
-//                     console.log(`Column ${columnName} added successfully.`);
-//                 }
-//             });
-//         } else {
-//             console.log(`Column ${columnName} already exists.`);
-//         }
-//     });
-// };
-
-// // Check and add columns
-// checkAndAddColumn('users', 'name', 'name VARCHAR(50)');
-// checkAndAddColumn('users', 'mobile', 'mobile VARCHAR(10)');
-// checkAndAddColumn('users', 'role', "role VARCHAR(20) DEFAULT 'user'");
-
 const insertUsersQuery = `
 INSERT IGNORE INTO users (name, email, mobile, role, role_id) VALUES
 ('sugata chanda', 'sugatachanda.cse2022@nsec.ac.in', '9748278005', 'user', 1),
@@ -171,7 +141,7 @@ db.query(insertUsersQuery, (err, result) => {
 });
 
 
-const tranporter = nodemailer.createTransport({
+const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     service: "gmail",
     port: 587,
@@ -215,7 +185,7 @@ app.post('/send-otp', (req, res) => {
                 html: template
             }
 
-            tranporter.sendMail(mailOptions, (err) => {
+            transporter.sendMail(mailOptions, (err) => {
                 if (err) return res.status(500).json({ message: err.message });
                 res.json({ message: "OTP sent successfully" })
             })
@@ -266,7 +236,7 @@ app.post("/verify-otp", (req, res) => {
             role_id: results[0].role_id
         };
 
-        const token = jwt.sign({ userData }, process.env.JWT_SECRET, { expiresIn: '2m' });
+        const token = jwt.sign({ userData }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         console.log("Fetched User Data:", userData);
 
@@ -322,6 +292,35 @@ app.post('/logout', (req, res) => {
     });
 });
 
+app.post('/request-edit', (req, res) => {
+    const { email, request } = req.body;
+
+    if (!email || !request) {
+        return res.status(400).json({ message: "Email and Request are required" });
+    }
+
+    let request_template = fs.readFileSync(path.join(__dirname, 'request_edit_template.html'), 'utf-8');
+
+    // Replace placeholders in template
+    request_template = request_template.replace('{{email}}', email).replace('{{request}}', request);
+
+    const mailOptions = {
+        from: email,
+        to: process.env.EMAIL_USER, // Admin Email
+        subject: 'Edit Profile Request',
+        text: `Request from: ${email}\n\nRequest Details:\n${request}`,
+        html: request_template
+    };
+
+    transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ message: "Failed to send request" });
+        }
+        res.json({ message: "Request sent successfully" });
+    });
+});
+
 const verifyToken = (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) return res.status(401).json({ error: 'Unauthorized' });
@@ -374,7 +373,6 @@ app.post("/verify-token", (req, res) => {
 app.get("/", (req, res) => {
     res.send("TIG SIM PORTAL BACKEND");
 });
-
 
 app.get("/protected", authenticateToken, (req, res) => {
     const token = req.headers["authorization"];
