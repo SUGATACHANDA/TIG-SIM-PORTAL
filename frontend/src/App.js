@@ -8,56 +8,55 @@ import AutoLogout from './components/AutoLogout';
 import Navbar from './components/DashboardComponets/Navbar';
 import UserProfile from './pages/Profile';
 import Footer from './components/DashboardComponets/Footer';
-import { UserProvider } from './context/UserContext';
+import { UserProvider } from './context/UserAuthContext';
 
 
 function App() {
-  return (
-    <>
+    return (
+        <>
 
-      <Router>
-        <UserProvider>
-          <AutoLogout />
-          <LocationBasedNavbar />
-          <div className="App">
-            <ToastContainer position="top-right" autoClose={3000} pauseOnHover={false} />
+            <Router>
+                <UserProvider>
+                    <AutoLogout />
+                    <LocationBasedNavbar />
+                    <div className="App">
+                        <ToastContainer position="top-right" autoClose={3000} pauseOnHover={false} />
 
-            <Routes>
-              <Route path="/" element={<LoginForm />} />
+                        <Routes>
+                            <Route path="/" element={<LoginForm />} />
 
-              <Route
-                path="/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/profile"
-                element={
-                  <ProtectedRoute>
-                    <UserProfile />
-                  </ProtectedRoute>
-                }
-              />
-            </Routes>
-          </div>
-          <LocationBasedFooter />
-        </UserProvider>
-      </Router>
-
-    </>
-  );
+                            <Route
+                                path="/dashboard"
+                                element={
+                                    <ProtectedRoute>
+                                        <Dashboard />
+                                    </ProtectedRoute>
+                                }
+                            />
+                            <Route
+                                path="/profile"
+                                element={
+                                    <ProtectedRoute>
+                                        <UserProfile />
+                                    </ProtectedRoute>
+                                }
+                            />
+                        </Routes>
+                    </div>
+                    <LocationBasedFooter />
+                </UserProvider>
+            </Router>
+        </>
+    );
 }
 
 function LocationBasedNavbar() {
-  const location = useLocation(); // useLocation is now inside the Router context
-  return location.pathname !== '/' ? <Navbar /> : null; // Render Navbar for all routes except '/'
+    const location = useLocation(); // useLocation is now inside the Router context
+    return location.pathname !== '/' ? <Navbar /> : null; // Render Navbar for all routes except '/'
 }
 function LocationBasedFooter() {
-  const location = useLocation(); // useLocation is now inside the Router context
-  return location.pathname !== '/' ? <Footer /> : null; // Render Navbar for all routes except '/'
+    const location = useLocation(); // useLocation is now inside the Router context
+    return location.pathname !== '/' ? <Footer /> : null; // Render Navbar for all routes except '/'
 }
 
 export default App;

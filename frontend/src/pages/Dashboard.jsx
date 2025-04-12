@@ -1,16 +1,16 @@
 import Loader from "../components/DashboardComponets/Loader";
 import AttendanceChart from "../components/DashboardComponets/AttendanceChart";
+import { useUser } from "../context/UserAuthContext";
 import { toast } from "react-toastify";
-import { useUser } from "../context/UserContext";
 
-
+// 
 
 const Dashboard = () => {
-
+    // const [user, setUser] = useState(null);
     const { user, loading, error } = useUser()
 
     if (error) {
-        toast.error(error.message)
+        toast.error(error.message);
     }
 
     if (!user || loading) {

@@ -3,7 +3,7 @@ import { requestEditProfile } from '../api';
 import Loader from '../components/DashboardComponets/Loader';
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
-import { useUser } from '../context/UserContext';
+import { useUser } from '../context/UserAuthContext';
 
 const UserProfile = () => {
 
