@@ -1,37 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { verifyToken, requestEditProfile } from '../api';
+import React, { useState } from 'react';
+import { requestEditProfile } from '../api';
 import Loader from '../components/DashboardComponets/Loader';
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
+import { useUser } from '../context/UserContext';
 
 const UserProfile = () => {
 
-    const [user, setUser] = useState(null);
     const [showTextarea, setShowTextarea] = useState(false);
     const [requestText, setRequestText] = useState("");
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-
-        if (!token) {
-            window.location.href = "/";
-            return;
-        }
-
-        verifyToken(token)
-            .then((data) => {
-                if (data.success) {
-                    setUser(data.user);
-                } else {
-                    alert("Invalid token");
-                    window.location.href = "/";
-                }
-            })
-            .catch(() => {
-                window.location.href = "/";
-            });
-    }, []);
+    const { user, error } = useUser();
+    if (error) {
+        toast.error(error.message);
+    }
 
     const handleSendRequest = async () => {
         if (!requestText.trim()) return alert("Please write your request.");
