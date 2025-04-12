@@ -1,19 +1,19 @@
 import Loader from "../components/DashboardComponets/Loader";
 import AttendanceChart from "../components/DashboardComponets/AttendanceChart";
-import { useUser } from "../context/UserContext";
 import { toast } from "react-toastify";
+import { useUser } from "../context/UserContext";
 
 
 
 const Dashboard = () => {
 
-    const { user, error } = useUser()
+    const { user, loading, error } = useUser()
 
     if (error) {
         toast.error(error.message)
     }
 
-    if (!user) {
+    if (!user || loading) {
         return (
             <div className="flex min-h-screen justify-center items-center">
                 <Loader />

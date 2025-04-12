@@ -10,11 +10,13 @@ import UserProfile from './pages/Profile';
 import Footer from './components/DashboardComponets/Footer';
 import { UserProvider } from './context/UserContext';
 
+
 function App() {
   return (
     <>
-      <UserProvider>
-        <Router>
+
+      <Router>
+        <UserProvider>
           <AutoLogout />
           <LocationBasedNavbar />
           <div className="App">
@@ -42,8 +44,9 @@ function App() {
             </Routes>
           </div>
           <LocationBasedFooter />
-        </Router>
-      </UserProvider>
+        </UserProvider>
+      </Router>
+
     </>
   );
 }
