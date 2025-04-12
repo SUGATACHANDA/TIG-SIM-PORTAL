@@ -8,39 +8,42 @@ import AutoLogout from './components/AutoLogout';
 import Navbar from './components/DashboardComponets/Navbar';
 import UserProfile from './pages/Profile';
 import Footer from './components/DashboardComponets/Footer';
+import { UserProvider } from './context/UserContext';
 
 function App() {
   return (
     <>
-      <Router>
-        <AutoLogout />
-        <LocationBasedNavbar />
-        <div className="App">
-          <ToastContainer position="top-right" autoClose={3000} pauseOnHover={false} />
+      <UserProvider>
+        <Router>
+          <AutoLogout />
+          <LocationBasedNavbar />
+          <div className="App">
+            <ToastContainer position="top-right" autoClose={3000} pauseOnHover={false} />
 
-          <Routes>
-            <Route path="/" element={<LoginForm />} />
+            <Routes>
+              <Route path="/" element={<LoginForm />} />
 
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                <ProtectedRoute>
-                  <UserProfile />
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
-        </div>
-        <LocationBasedFooter />
-      </Router>
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <UserProfile />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </div>
+          <LocationBasedFooter />
+        </Router>
+      </UserProvider>
     </>
   );
 }

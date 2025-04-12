@@ -14,12 +14,12 @@ const Navbar = () => {
     }
 
     return (
-        <nav className="bg-red-600 border-gray-200 dark:bg-red-600 dark:border-red-700">
+        <nav className="relative bg-red-600 border-gray-200 dark:bg-red-600 dark:border-red-700">
             <div className="max-w-screen-xl mx-auto flex flex-wrap items-center justify-between p-4">
 
                 <a href="/dashboard" className="flex items-center space-x-3">
-                    <img src={logo} className="h-8" alt="logo" />
-                    <span className="text-2xl font-semibold text-white whitespace-nowrap">Techno India Group</span>
+                    <img src={logo} className="h-8 w-auto" alt="logo" />
+                    <span className="text-lg sm:text-2xl font-semibold text-white whitespace-nowrap">Techno India Group</span>
                 </a>
 
                 <div className="flex items-center gap-3 md:hidden">
@@ -39,8 +39,7 @@ const Navbar = () => {
                         <li><a href="/dashboard" className="text-white hover:text-gray-300">Home</a></li>
 
                         {/* Dropdown 1 */}
-                        <li
-                            className="relative"
+                        <li className="relative"
                             onMouseEnter={() => setActiveDropdown(1)}
                             onMouseLeave={() => setActiveDropdown(null)}
                         >
@@ -51,7 +50,7 @@ const Navbar = () => {
                                 </svg>
                             </button>
                             {activeDropdown === 1 && (
-                                <div className="absolute left-0 top-full bg-red-600 rounded-lg shadow-sm z-50">
+                                <div className="absolute left-0 top-full bg-red-600 rounded-lg shadow-sm z-[999] min-w-[160px]">
                                     <ul className="py-2 text-sm text-white">
                                         <li><a href="#" className="block px-4 py-2 hover:bg-red-700">Dashboard</a></li>
                                         <li><a href="#" className="block px-4 py-2 hover:bg-red-700">Settings</a></li>
@@ -62,8 +61,7 @@ const Navbar = () => {
                         </li>
 
                         {/* Dropdown 2 */}
-                        <li
-                            className="relative"
+                        <li className="relative"
                             onMouseEnter={() => setActiveDropdown(2)}
                             onMouseLeave={() => setActiveDropdown(null)}
                         >
@@ -74,7 +72,7 @@ const Navbar = () => {
                                 </svg>
                             </button>
                             {activeDropdown === 2 && (
-                                <div className="absolute left-0 top-full bg-red-600 rounded-lg shadow-sm z-50">
+                                <div className="absolute left-0 top-full bg-red-600 rounded-lg shadow-sm z-[999] min-w-[160px]">
                                     <ul className="py-2 text-sm text-white">
                                         <li><a href="#" className="block px-4 py-2 hover:bg-red-700">Dashboard</a></li>
                                         <li><a href="#" className="block px-4 py-2 hover:bg-red-700">Settings</a></li>
@@ -85,8 +83,7 @@ const Navbar = () => {
                         </li>
 
                         {/* Dropdown 3 */}
-                        <li
-                            className="relative"
+                        <li className="relative"
                             onMouseEnter={() => setActiveDropdown(3)}
                             onMouseLeave={() => setActiveDropdown(null)}
                         >
@@ -97,7 +94,7 @@ const Navbar = () => {
                                 </svg>
                             </button>
                             {activeDropdown === 3 && (
-                                <div className="absolute left-0 top-full bg-red-600 rounded-lg shadow-sm z-50">
+                                <div className="absolute left-0 top-full bg-red-600 rounded-lg shadow-sm z-[999] min-w-[160px]">
                                     <ul className="py-2 text-sm text-white">
                                         <li><a href="#" className="block px-4 py-2 hover:bg-red-700">Dashboard</a></li>
                                         <li><a href="#" className="block px-4 py-2 hover:bg-red-700">Settings</a></li>
@@ -107,7 +104,7 @@ const Navbar = () => {
                             )}
                         </li>
 
-                        {/* User Dropdown */}
+                        {/* User Dropdown (Desktop) */}
                         <div className="relative hidden md:block"
                             onMouseEnter={() => setActiveDropdown('user')}
                             onMouseLeave={() => setActiveDropdown(null)}
@@ -117,7 +114,7 @@ const Navbar = () => {
                             </button>
 
                             {activeDropdown === 'user' && (
-                                <div className="absolute right-0 bg-red-600 rounded-lg shadow-sm">
+                                <div className="absolute right-0 bg-red-600 rounded-lg shadow-sm z-[999] min-w-[140px]">
                                     <ul className="py-2 text-sm cursor-pointer text-white">
                                         <li><a href="/profile" className="block px-4 py-2 hover:bg-red-700">Settings</a></li>
                                         <li><a onClick={handleLogout} className="block px-4 py-2 hover:bg-red-700">Logout</a></li>
@@ -128,8 +125,9 @@ const Navbar = () => {
                     </ul>
                 </div>
 
+                {/* User Dropdown (Mobile) */}
                 {isUserMenuOpen && (
-                    <div className="absolute right-4 top-16 md:hidden bg-red-600 rounded-lg shadow-sm z-50">
+                    <div className="absolute right-4 top-16 md:hidden bg-red-600 rounded-lg shadow-sm z-[999] min-w-[140px]">
                         <ul className="py-2 text-sm text-white">
                             <li><a href="/profile" className="block px-4 py-2 hover:bg-red-700">Settings</a></li>
                             <li><a onClick={handleLogout} className="block px-4 py-2 hover:bg-red-700">Logout</a></li>
