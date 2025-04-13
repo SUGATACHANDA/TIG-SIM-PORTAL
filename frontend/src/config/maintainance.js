@@ -1,5 +1,5 @@
 const maintainanceConfig = {
-    maintenanceMode: false,
+    maintenanceMode: true,
 }
 
 export default maintainanceConfig
