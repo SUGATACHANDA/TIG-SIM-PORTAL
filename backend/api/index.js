@@ -10,6 +10,8 @@ const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
 
+const app = express();
+
 const corsOptions = {
     origin: 'https://tigsimportal.vercel.app',
     // origin: 'http://192.168.1.8:3000',
@@ -20,12 +22,12 @@ const corsOptions = {
     optionsSuccessStatus: 204 // some legacy browsers choke on 204
 };
 
-const app = express();
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions))
 app.use(express.json());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
 // Add fallback CORS headers
 // app.use((req, res, next) => {
