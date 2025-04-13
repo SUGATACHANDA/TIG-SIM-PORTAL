@@ -10,8 +10,6 @@ const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
 
-const app = express();
-
 const corsOptions = {
     origin: 'https://tigsimportal.vercel.app',
     // origin: 'http://192.168.1.8:3000',
@@ -22,26 +20,25 @@ const corsOptions = {
     optionsSuccessStatus: 204 // some legacy browsers choke on 204
 };
 
+const app = express();
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions))
 app.use(express.json());
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Add fallback CORS headers
-// app.use((req, res, next) => {
-//     res.header("Access-Control-Allow-Origin", "https://tigsimportal.vercel.app");
-//     // res.header("Access-Control-Allow-Origin", "http://192.168.1.8:3000");
-//     // res.header("Access-Control-Allow-Origin", "http://172.30.192.1:3000");
-//     res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS");
-//     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-//     if (req.method === "OPTIONS") {
-//         res.sendStatus(204); // Respond to preflight requests
-//     } else {
-//         next();
-//     }
-// });
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "https://tigsimportal.vercel.app");
+    // res.header("Access-Control-Allow-Origin", "http://192.168.1.8:3000");
+    // res.header("Access-Control-Allow-Origin", "http://172.30.192.1:3000");
+    res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    if (req.method === "OPTIONS") {
+        res.sendStatus(204); // Respond to preflight requests
+    } else {
+        next();
+    }
+});
 
 const db = mysql.createPool({
     host: process.env.DB_HOST,
