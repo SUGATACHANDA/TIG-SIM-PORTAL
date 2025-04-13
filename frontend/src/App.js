@@ -9,9 +9,16 @@ import Navbar from './components/DashboardComponets/Navbar';
 import UserProfile from './pages/Profile';
 import Footer from './components/DashboardComponets/Footer';
 import { UserProvider } from './context/UserAuthContext';
+import maintainanceConfig from './config/maintainance';
+import Maintenance from './components/MaintainanceComponent/Maintainance';
 
 
 function App() {
+
+    if (maintainanceConfig.maintenanceMode) {
+        return <Maintenance />
+    }
+
     return (
         <>
 
