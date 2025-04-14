@@ -4,13 +4,13 @@ import { ToastContainer } from 'react-toastify';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import Dashboard from './pages/Dashboard';
-import AutoLogout from './components/AutoLogout';
 import Navbar from './components/DashboardComponets/Navbar';
 import UserProfile from './pages/Profile';
 import Footer from './components/DashboardComponets/Footer';
 import { UserProvider } from './context/UserAuthContext';
 import maintainanceConfig from './config/maintainance';
 import Maintenance from './components/MaintainanceComponent/Maintainance';
+
 
 
 function App() {
@@ -24,11 +24,9 @@ function App() {
 
             <Router>
                 <UserProvider>
-                    <AutoLogout />
                     <LocationBasedNavbar />
                     <div className="App">
                         <ToastContainer position="top-right" autoClose={3000} pauseOnHover={false} />
-
                         <Routes>
                             <Route path="/" element={<LoginForm />} />
 
@@ -58,12 +56,12 @@ function App() {
 }
 
 function LocationBasedNavbar() {
-    const location = useLocation(); // useLocation is now inside the Router context
-    return location.pathname !== '/' ? <Navbar /> : null; // Render Navbar for all routes except '/'
+    const location = useLocation();
+    return location.pathname !== '/' ? <Navbar /> : null;
 }
 function LocationBasedFooter() {
-    const location = useLocation(); // useLocation is now inside the Router context
-    return location.pathname !== '/' ? <Footer /> : null; // Render Navbar for all routes except '/'
+    const location = useLocation();
+    return location.pathname !== '/' ? <Footer /> : null;
 }
 
 export default App;

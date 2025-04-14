@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import { sendOTP, verifyOTP } from "../api.js";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
