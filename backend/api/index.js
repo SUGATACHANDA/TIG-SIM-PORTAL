@@ -13,7 +13,7 @@ const cors = require('cors');
 const corsOptions = {
     origin: 'https://tigsimportal.vercel.app',
     // origin: 'http://192.168.1.8:3000',
-    // origin: 'http://172.30.192.1:3000',
+    // origin: 'http://localhost:3000',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // allow cookies and credentials
     allowedHeaders: ['Content-Type', 'Authorization'], // explicitly allow headers
@@ -30,7 +30,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "https://tigsimportal.vercel.app");
     // res.header("Access-Control-Allow-Origin", "http://192.168.1.8:3000");
-    // res.header("Access-Control-Allow-Origin", "http://172.30.192.1:3000");
+    // res.header("Access-Control-Allow-Origin", "http://localhost:3000");
     res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS");
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
     if (req.method === "OPTIONS") {
@@ -236,7 +236,7 @@ app.post("/verify-otp", (req, res) => {
             role_id: results[0].role_id
         };
 
-        const token = jwt.sign({ userData }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ userData }, process.env.JWT_SECRET, { expiresIn: '2m' });
 
         console.log("Fetched User Data:", userData);
 
